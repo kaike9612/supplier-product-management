@@ -20,3 +20,7 @@ Route::apiResource('companies', CompanyController::class);
 
 // Products routes
 Route::apiResource('products', ProductController::class);
+
+// Nested routes - Products for a Company
+Route::get('companies/{company}/products', [ProductController::class, 'index']);
+Route::post('companies/{company}/products', [ProductController::class, 'store']);

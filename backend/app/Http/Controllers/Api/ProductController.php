@@ -14,12 +14,18 @@ class ProductController extends Controller
 {
     /**
      * List all products with pagination.
+     * Optional: filter by company_id for nested routes.
      */
-    public function index(): AnonymousResourceCollection
+    public function index(\Illuminate\Http\Request $request): AnonymousResourceCollection
     {
-        $products = Product::with('company')->paginate(10);
-        return ProductResource::collection($products);
-    }
+        $products = Product::with('company');
+        
+        // If company_id is provided (nested route), filter by company
+        if ($request->has('company_id')) {
+            $products->where('company_id', $request->company_id);
+        }
+        
+        return ProductResource::collection($products->paginate(10));
 
     /**
      * Show a single product.

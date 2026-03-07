@@ -19,7 +19,6 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         return [
-            'company_id' => Company::factory(),
             'name' => fake()->words(3, true),
             'sku' => fake()->unique()->numerify('SKU-####-####'),
             'price' => fake()->randomFloat(2, 10, 1000),
