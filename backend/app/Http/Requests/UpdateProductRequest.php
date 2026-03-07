@@ -22,10 +22,10 @@ class UpdateProductRequest extends FormRequest
      */
     public function rules(): array
     {
-        $productId = $this->route('product');
+        $productId = $this->route('id');
         
         return [
-            'company_id' => 'sometimes|required|exists:companies,id',
+            'company_id' => 'sometimes|required|integer|exists:companies,id',
             'name' => 'sometimes|required|string|max:255',
             'sku' => [
                 'sometimes',

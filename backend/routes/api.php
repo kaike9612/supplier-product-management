@@ -16,11 +16,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Companies routes
-Route::apiResource('companies', CompanyController::class);
+Route::apiResource('companies', CompanyController::class)->parameters([
+    'companies' => 'id'
+]);
 
 // Products routes
-Route::apiResource('products', ProductController::class);
+Route::apiResource('products', ProductController::class)->parameters([
+    'products' => 'id'
+]);
+
+// Custom route to inactivate a product
+Route::patch('products/{id}/inactivate', [ProductController::class, 'inactivate']);
 
 // Nested routes - Products for a Company
-Route::get('companies/{company}/products', [ProductController::class, 'index']);
-Route::post('companies/{company}/products', [ProductController::class, 'store']);
+Route::get('companies/{id}/products', [ProductController::class, 'index']);
+Route::post('companies/{id}/products', [ProductController::class, 'store']);

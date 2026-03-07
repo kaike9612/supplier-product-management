@@ -6,27 +6,40 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
 use App\Http\Resources\CompanyResource;
-use App\Models\Company;
+use App\Services\CompanyService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class CompanyController extends Controller
 {
+    public function __construct(
+        private CompanyService $companyService
+    ) {}
+
     /**
-     * List all companies with pagination.
+     * List all companies with pagination and filters.
      */
-    public function index(): AnonymousResourceCollection
+    public function index(\Illuminate\Http\Request $request): AnonymousResourceCollection
     {
-        $companies = Company::with('products')->paginate(10);
+        $filters = $request->only(['name', 'status']);
+        $companies = $this->companyService->getAll($filters);
         return CompanyResource::collection($companies);
     }
 
     /**
      * Show a single company.
      */
-    public function show(Company $company): CompanyResource
+    public function show(int $id): JsonResponse|CompanyResource
     {
-        return new CompanyResource($company->load('products'));
+        $company = $this->companyService->findById($id);
+        
+        if (!$company) {
+            return response()->json([
+                'message' => 'Empresa não encontrada.'
+            ], 404);
+        }
+
+        return new CompanyResource($company);
     }
 
     /**
@@ -34,8 +47,8 @@ class CompanyController extends Controller
      */
     public function store(StoreCompanyRequest $request): JsonResponse
     {
-        $company = Company::create($request->validated());
-        return (new CompanyResource($company))
+        $company = $this->companyService->create($request->validated());
+        return (new CompanyResource($company->load('products')))
             ->response()
             ->setStatusCode(201);
     }
@@ -43,35 +56,44 @@ class CompanyController extends Controller
     /**
      * Update an existing company.
      */
-    public function update(UpdateCompanyRequest $request, Company $company): CompanyResource
+    public function update(UpdateCompanyRequest $request, int $id): JsonResponse|CompanyResource
     {
-        $company->update($request->validated());
+        $company = $this->companyService->findById($id);
         
-        // Business rule: If company is deactivated, deactivate all products
-        if ($request->has('status') && $request->status === 'inactive') {
-            $company->products()->update(['status' => 'inactive']);
+        if (!$company) {
+            return response()->json([
+                'message' => 'Empresa não encontrada.'
+            ], 404);
         }
-        
-        return new CompanyResource($company->load('products'));
+
+        $company = $this->companyService->update($company, $request->validated());
+        return new CompanyResource($company);
     }
 
     /**
-     * Delete a company (soft delete).
-     * Business rule: Cannot delete if company has products.
+     * Delete a company (physical deletion).
+     * Business rule: Cannot delete if company has any products (active or inactive).
      */
-    public function destroy(Company $company): JsonResponse
+    public function destroy(int $id): JsonResponse
     {
-        // Check if company has products
-        if ($company->products()->count() > 0) {
+        $company = $this->companyService->findById($id);
+        
+        if (!$company) {
             return response()->json([
-                'message' => 'Cannot delete company. It has associated products.'
+                'message' => 'Empresa não encontrada.'
+            ], 404);
+        }
+
+        $result = $this->companyService->delete($company);
+
+        if (!$result['success']) {
+            return response()->json([
+                'message' => $result['message']
             ], 422);
         }
-        
-        $company->delete();
-        
+
         return response()->json([
-            'message' => 'Company deleted successfully.'
+            'message' => $result['message']
         ], 200);
     }
 }

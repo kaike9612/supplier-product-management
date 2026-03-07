@@ -22,7 +22,7 @@ class UpdateCompanyRequest extends FormRequest
      */
     public function rules(): array
     {
-        $companyId = $this->route('company');
+        $companyId = $this->route('id');
         
         return [
             'name' => 'sometimes|required|string|max:255',
