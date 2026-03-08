@@ -65,11 +65,12 @@ export function CompaniesListPage() {
   if (isError) return <EmptyState title="Erro" description="Falha ao carregar empresas" />;
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-5">
+      {/* Page Header */}
+      <div className="page-header">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Empresas</h1>
-          <p className="text-gray-600">Gerencie as empresas fornecedoras</p>
+          <h1 className="page-title">Empresas</h1>
+          <p className="page-subtitle">Gerencie as empresas fornecedoras</p>
         </div>
         <Link to="/companies/new">
           <Button>
@@ -87,8 +88,9 @@ export function CompaniesListPage() {
         <Alert type="success" message={success} onClose={() => setSuccess(null)} />
       )}
 
-      <div className="bg-white rounded-xl border border-gray-200 p-4">
-        <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4">
+      {/* Filter Bar */}
+      <div className="filter-bar">
+        <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-3">
           <div className="flex-1">
             <Input
               placeholder="Buscar por nome..."
@@ -119,50 +121,51 @@ export function CompaniesListPage() {
         />
       ) : (
         <>
-          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          {/* Premium Table */}
+          <div className="table-container">
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+              <table className="min-w-full">
+                <thead className="table-header">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="table-header-cell">
                       Nome
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="table-header-cell">
                       CNPJ
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="table-header-cell">
                       Email
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="table-header-cell">
                       Status
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="table-header-cell text-right">
                       Ações
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="divide-y divide-slate-50">
                   {data?.data.map((company) => (
-                    <tr key={company.id} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-6 py-4 whitespace-nowrap">
+                    <tr key={company.id} className="table-row">
+                      <td className="table-cell">
                         <div className="flex items-center gap-3">
-                          <div className="p-2 bg-primary-100 rounded-lg">
+                          <div className="p-2 bg-gradient-to-br from-primary-50 to-primary-100 rounded-lg">
                             <Building2 className="h-4 w-4 text-primary-600" />
                           </div>
-                          <span className="font-medium text-gray-900">{company.name}</span>
+                          <span className="font-medium text-slate-900">{company.name}</span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                      <td className="table-cell text-slate-600">
                         {company.cnpj}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                      <td className="table-cell text-slate-600">
                         {company.email}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="table-cell">
                         <Badge status={company.status} />
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right">
-                        <div className="flex items-center justify-end gap-2">
+                      <td className="table-cell text-right">
+                        <div className="flex items-center justify-end gap-1.5">
                           <Link to={`/companies/${company.id}/edit`}>
                             <Button variant="outline" size="sm">
                               <Edit2 className="h-4 w-4" />
@@ -202,10 +205,10 @@ export function CompaniesListPage() {
         size="sm"
       >
         <div className="space-y-4">
-          <p className="text-gray-600">
+          <p className="text-slate-600">
             Tem certeza que deseja excluir a empresa <strong>{deleteModal.company?.name}</strong>?
           </p>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-slate-500">
             Esta ação não pode ser desfeita.
           </p>
           <div className="flex justify-end gap-3">

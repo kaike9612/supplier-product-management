@@ -6,8 +6,8 @@ interface BadgeProps {
 
 export function Badge({ status }: BadgeProps) {
   const styles = {
-    active: 'bg-green-100 text-green-800',
-    inactive: 'bg-gray-100 text-gray-800',
+    active: 'bg-emerald-50 text-emerald-700 border border-emerald-100',
+    inactive: 'bg-slate-50 text-slate-600 border border-slate-100',
   };
 
   const labels = {
@@ -17,7 +17,7 @@ export function Badge({ status }: BadgeProps) {
 
   return (
     <span
-      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${styles[status]}`}
+      className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${styles[status]}`}
     >
       {labels[status]}
     </span>

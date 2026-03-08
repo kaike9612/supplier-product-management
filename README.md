@@ -185,6 +185,16 @@ Frontend disponível em: http://localhost:5173
 
 ---
 
+## Production build
+
+```
+bash
+cd frontend
+npm run build
+```
+
+---
+
 ## Integração
 
 O frontend utiliza proxy do Vite para encaminhar chamadas /api para o backend Laravel.

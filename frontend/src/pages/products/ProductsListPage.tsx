@@ -95,11 +95,12 @@ export function ProductsListPage() {
   })) || [];
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-5">
+      {/* Page Header */}
+      <div className="page-header">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Produtos</h1>
-          <p className="text-gray-600">Gerencie os produtos das empresas</p>
+          <h1 className="page-title">Produtos</h1>
+          <p className="page-subtitle">Gerencie os produtos das empresas</p>
         </div>
         <Link to="/products/new">
           <Button>
@@ -117,8 +118,9 @@ export function ProductsListPage() {
         <Alert type="success" message={success} onClose={() => setSuccess(null)} />
       )}
 
-      <div className="bg-white rounded-xl border border-gray-200 p-4">
-        <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4">
+      {/* Filter Bar */}
+      <div className="filter-bar">
+        <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-3">
           <div className="flex-1">
             <Input
               placeholder="Buscar por nome..."
@@ -159,62 +161,63 @@ export function ProductsListPage() {
         />
       ) : (
         <>
-          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          {/* Premium Table */}
+          <div className="table-container">
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+              <table className="min-w-full">
+                <thead className="table-header">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="table-header-cell">
                       Produto
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="table-header-cell">
                       SKU
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="table-header-cell">
                       Empresa
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="table-header-cell">
                       Preço
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="table-header-cell">
                       Status
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="table-header-cell text-right">
                       Ações
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="divide-y divide-slate-50">
                   {products?.data.map((product) => (
-                    <tr key={product.id} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-6 py-4 whitespace-nowrap">
+                    <tr key={product.id} className="table-row">
+                      <td className="table-cell">
                         <div className="flex items-center gap-3">
-                          <div className="p-2 bg-primary-100 rounded-lg">
+                          <div className="p-2 bg-gradient-to-br from-primary-50 to-primary-100 rounded-lg">
                             <Package className="h-4 w-4 text-primary-600" />
                           </div>
-                          <span className="font-medium text-gray-900">{product.name}</span>
+                          <span className="font-medium text-slate-900">{product.name}</span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                      <td className="table-cell text-slate-600">
                         {product.sku}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                      <td className="table-cell text-slate-600">
                         {product.company?.name || '-'}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
+                      <td className="table-cell font-medium text-slate-900">
                         R$ {product.price.toFixed(2).replace('.', ',')}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="table-cell">
                         <Badge status={product.status} />
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right">
-                        <div className="flex items-center justify-end gap-2">
+                      <td className="table-cell text-right">
+                        <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={() => handleInactivate(product)}
-                            className={`p-2 rounded-lg transition-colors ${
+                            className={`p-2 rounded-lg transition-all duration-200 ${
                               product.status === 'active'
-                                ? 'text-green-600 hover:bg-green-50'
-                                : 'text-gray-400 hover:bg-gray-50'
+                                ? 'text-emerald-600 hover:bg-emerald-50'
+                                : 'text-slate-400 hover:bg-slate-100'
                             }`}
                             title={product.status === 'active' ? 'Inativar' : 'Ativar'}
                           >
@@ -263,10 +266,10 @@ export function ProductsListPage() {
         size="sm"
       >
         <div className="space-y-4">
-          <p className="text-gray-600">
+          <p className="text-slate-600">
             Tem certeza que deseja excluir o produto <strong>{deleteModal.product?.name}</strong>?
           </p>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-slate-500">
             Esta ação não pode ser desfeita.
           </p>
           <div className="flex justify-end gap-3">

@@ -12,7 +12,6 @@ interface PaginationProps {
 }
 
 export function Pagination({ currentPage, lastPage, onPageChange, links }: PaginationProps) {
-  // Filter out pagination links that don't have URLs (like "Previous" or "Next" when disabled)
   const pageLinks = links.filter(
     (link) => link.url !== null && !link.label.includes('&laquo;') && !link.label.includes('&raquo;')
   );
@@ -32,19 +31,18 @@ export function Pagination({ currentPage, lastPage, onPageChange, links }: Pagin
   if (lastPage <= 1) return null;
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 bg-white border border-gray-200 rounded-lg">
-      <div className="flex items-center gap-2">
+    <div className="flex items-center justify-between px-5 py-3.5 bg-white border border-slate-100 rounded-xl shadow-sm">
+      <div className="flex items-center gap-1">
         <button
           onClick={handlePrevious}
           disabled={currentPage === 1}
-          className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="p-2 rounded-lg hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors text-slate-600"
         >
           <ChevronLeft className="h-5 w-5" />
         </button>
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5 mx-1">
           {pageLinks.map((link, index) => {
-            // Extract page number from URL (e.g., "http://example.com?page=2" -> 2)
             const url = link.url || '';
             const pageMatch = url.match(/page=(\d+)/);
             const pageNum = pageMatch ? parseInt(pageMatch[1], 10) : index + 1;
@@ -53,10 +51,10 @@ export function Pagination({ currentPage, lastPage, onPageChange, links }: Pagin
               <button
                 key={index}
                 onClick={() => onPageChange(pageNum)}
-                className={`min-w-[40px] h-10 rounded-lg text-sm font-medium transition-colors ${
+                className={`min-w-[36px] h-9 rounded-lg text-sm font-medium transition-all duration-200 ${
                   link.active
-                    ? 'bg-primary-600 text-white'
-                    : 'text-gray-700 hover:bg-gray-100'
+                    ? 'bg-primary-600 text-white shadow-sm'
+                    : 'text-slate-600 hover:bg-slate-100'
                 }`}
                 dangerouslySetInnerHTML={{ __html: link.label }}
               />
@@ -67,13 +65,13 @@ export function Pagination({ currentPage, lastPage, onPageChange, links }: Pagin
         <button
           onClick={handleNext}
           disabled={currentPage === lastPage}
-          className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="p-2 rounded-lg hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors text-slate-600"
         >
           <ChevronRight className="h-5 w-5" />
         </button>
       </div>
 
-      <span className="text-sm text-gray-600">
+      <span className="text-sm text-slate-500 font-medium">
         Página {currentPage} de {lastPage}
       </span>
     </div>

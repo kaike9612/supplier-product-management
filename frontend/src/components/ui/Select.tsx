@@ -20,7 +20,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <div className="w-full">
         {label && (
-          <label htmlFor={selectId} className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor={selectId} className="block text-sm font-medium text-slate-700 mb-1.5">
             {label}
           </label>
         )}
@@ -29,9 +29,18 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           id={selectId}
           value={value}
           onChange={onChange}
-          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors ${
-            error ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
+          className={`w-full px-3.5 py-2.5 border rounded-lg text-sm text-slate-800 bg-white focus:outline-none focus:ring-2 transition-all duration-200 appearance-none cursor-pointer ${
+            error 
+              ? 'border-red-500 focus:ring-red-500/20 focus:border-red-500' 
+              : 'border-slate-300 focus:ring-primary-500/20 focus:border-primary-500'
           } ${className}`}
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
+            backgroundPosition: 'right 0.5rem center',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: '1.5em 1.5em',
+            paddingRight: '2.5rem'
+          }}
           {...props}
         >
           {options.map((option) => (
@@ -40,7 +49,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             </option>
           ))}
         </select>
-        {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+        {error && <p className="mt-1.5 text-sm text-red-600">{error}</p>}
       </div>
     );
   }
