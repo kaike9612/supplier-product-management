@@ -2,6 +2,27 @@
 
 Desafio técnico full stack para gerenciamento de fornecedores e produtos.
 
+## 📸 System Interface
+
+### 🏠 Dashboard
+Main dashboard of the application with quick navigation to Companies and Products modules.
+
+![Dashboard](docs/images/dashboard.jpg)
+
+---
+
+### 🏢 Companies Management
+Companies listing page with filtering, search and management actions.
+
+![Companies](docs/images/empresas.jpg)
+
+---
+
+### 📦 Products Management
+Products listing page connected to companies with filters and pagination.
+
+![Products](docs/images/produtos.jpg)
+
 Stack utilizada:
 
 Backend:
