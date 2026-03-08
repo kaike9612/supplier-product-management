@@ -40,4 +40,8 @@ export const companyService = {
   async delete(id: number): Promise<void> {
     await api.delete(`/companies/${id}`);
   },
+
+  async inactivate(id: number): Promise<void> {
+    await api.patch(`/companies/${id}/inactivate`);
+  },
 };

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { Plus, Search, Edit2, Trash2, Building2 } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2, Building2, ToggleLeft, ToggleRight } from 'lucide-react';
 import { companyService } from '@/services/companyService';
 import { Company, Status } from '@/types';
 import { Button, Input, Select, Badge, LoadingPage, EmptyState, Alert, Modal, Pagination } from '@/components/ui';
@@ -45,6 +45,19 @@ export function CompaniesListPage() {
     },
   });
 
+  const inactivateMutation = useMutation({
+    mutationFn: (id: number) => companyService.inactivate(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['companies'] });
+      setSuccess('Empresa inativada com sucesso!');
+      setTimeout(() => setSuccess(null), 3000);
+    },
+    onError: (error: Error) => {
+      setError(error.message);
+      setTimeout(() => setError(null), 5000);
+    },
+  });
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     setPage(1);
@@ -52,6 +65,12 @@ export function CompaniesListPage() {
 
   const handleDelete = (company: Company) => {
     setDeleteModal({ isOpen: true, company });
+  };
+
+  const handleInactivate = (company: Company) => {
+    if (company.status === 'active') {
+      inactivateMutation.mutate(company.id);
+    }
   };
 
   const confirmDelete = () => {
@@ -166,6 +185,21 @@ export function CompaniesListPage() {
                       </td>
                       <td className="table-cell text-right">
                         <div className="flex items-center justify-end gap-1.5">
+                          <button
+                            onClick={() => handleInactivate(company)}
+                            className={`p-2 rounded-lg transition-all duration-200 ${
+                              company.status === 'active'
+                                ? 'text-emerald-600 hover:bg-emerald-50'
+                                : 'text-slate-400 hover:bg-slate-100'
+                            }`}
+                            title={company.status === 'active' ? 'Inativar' : 'Ativar'}
+                          >
+                            {company.status === 'active' ? (
+                              <ToggleRight className="h-5 w-5" />
+                            ) : (
+                              <ToggleLeft className="h-5 w-5" />
+                            )}
+                          </button>
                           <Link to={`/companies/${company.id}/edit`}>
                             <Button variant="outline" size="sm">
                               <Edit2 className="h-4 w-4" />

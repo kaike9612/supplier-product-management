@@ -92,4 +92,21 @@ class CompanyService
     {
         return Company::with('products')->find($id);
     }
+
+    /**
+     * Inactivate a company.
+     * When a company is inactivated, all its products are also inactivated.
+     */
+    public function inactivate(Company $company): Company
+    {
+        return DB::transaction(function () use ($company) {
+            // Update company status to inactive
+            $company->update(['status' => 'inactive']);
+
+            // Inactivate all products linked to this company
+            $company->products()->update(['status' => 'inactive']);
+
+            return $company->fresh(['products']);
+        });
+    }
 }
