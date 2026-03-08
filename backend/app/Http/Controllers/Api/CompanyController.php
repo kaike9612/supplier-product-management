@@ -96,25 +96,4 @@ class CompanyController extends Controller
             'message' => $result['message']
         ], 200);
     }
-
-    /**
-     * Inactivate a company (logical deletion).
-     * Business rule: When company is inactivated, all linked products are also inactivated.
-     */
-    public function inactivate(int $id): JsonResponse
-    {
-        $company = $this->companyService->findById($id);
-        
-        if (!$company) {
-            return response()->json([
-                'message' => 'Empresa não encontrada.'
-            ], 404);
-        }
-
-        $company = $this->companyService->inactivate($company);
-        
-        return response()->json([
-            'message' => 'Empresa inativada com sucesso.'
-        ], 200);
-    }
 }

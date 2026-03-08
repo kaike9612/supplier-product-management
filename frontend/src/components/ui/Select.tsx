@@ -32,7 +32,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           className={`w-full px-3.5 py-2.5 border rounded-lg text-sm text-slate-800 bg-white focus:outline-none focus:ring-2 transition-all duration-200 appearance-none cursor-pointer ${
             error 
               ? 'border-red-500 focus:ring-red-500/20 focus:border-red-500' 
-              : 'border-surface-300 focus:ring-primary-500/20 focus:border-primary-500'
+              : 'border-slate-300 focus:ring-primary-500/20 focus:border-primary-500'
           } ${className}`}
           style={{
             backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,

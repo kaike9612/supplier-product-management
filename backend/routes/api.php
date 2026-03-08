@@ -20,9 +20,6 @@ Route::apiResource('companies', CompanyController::class)->parameters([
     'companies' => 'id'
 ]);
 
-// Custom route to inactivate a company
-Route::patch('companies/{id}/inactivate', [CompanyController::class, 'inactivate']);
-
 // Products routes
 Route::apiResource('products', ProductController::class)->parameters([
     'products' => 'id'
