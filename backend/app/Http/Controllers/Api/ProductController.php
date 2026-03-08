@@ -27,6 +27,17 @@ class ProductController extends Controller
     }
 
     /**
+     * List products for a specific company (nested route).
+     */
+    public function indexByCompany(int $companyId, \Illuminate\Http\Request $request): AnonymousResourceCollection
+    {
+        $filters = $request->only(['name', 'status']);
+        $filters['company_id'] = $companyId;
+        $products = $this->productService->getAll($filters);
+        return ProductResource::collection($products);
+    }
+
+    /**
      * Show a single product.
      */
     public function show(int $id): JsonResponse|ProductResource

@@ -29,5 +29,5 @@ Route::apiResource('products', ProductController::class)->parameters([
 Route::patch('products/{id}/inactivate', [ProductController::class, 'inactivate']);
 
 // Nested routes - Products for a Company
-Route::get('companies/{id}/products', [ProductController::class, 'index']);
+Route::get('companies/{id}/products', [ProductController::class, 'indexByCompany']);
 Route::post('companies/{id}/products', [ProductController::class, 'store']);
