@@ -45,6 +45,7 @@ export function CompaniesListPage() {
     },
   });
 
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     setPage(1);
