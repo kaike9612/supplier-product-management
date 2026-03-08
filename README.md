@@ -2,28 +2,15 @@
 
 Desafio técnico full stack para gerenciamento de fornecedores e produtos.
 
-## 📸 System Interface
+## 📸 Screenshots / Interface do Sistema
 
-### 🏠 Dashboard
-Main dashboard of the application with quick navigation to Companies and Products modules.
+Imagem geral da interface do sistema, exibindo a tela inicial, a listagem de empresas e a listagem de produtos.
 
-![Dashboard](docs/images/dashboard.jpg)
-
----
-
-### 🏢 Companies Management
-Companies listing page with filtering, search and management actions.
-
-![Companies](docs/images/empresas.jpg)
+![System Interface](docs/images/system-interface.png)
 
 ---
 
-### 📦 Products Management
-Products listing page connected to companies with filters and pagination.
-
-![Products](docs/images/produtos.jpg)
-
-Stack utilizada:
+## Stack / Stack utilizada
 
 Backend:
 - Laravel 12
@@ -42,13 +29,13 @@ Frontend:
 
 ---
 
-## Objetivo
+## Objective / Objetivo
 
 Construir uma aplicação para gerenciamento de empresas fornecedoras e seus produtos.
 
 ---
 
-## Funcionalidades
+## Features / Funcionalidades
 
 ### Empresas
 - Listagem de empresas
@@ -73,7 +60,7 @@ Construir uma aplicação para gerenciamento de empresas fornecedoras e seus pro
 
 ---
 
-## Regras de negócio
+## Business Rules / Regras de negócio
 
 - Uma empresa pode ser marcada como inactive
 - Ao inativar uma empresa, seus produtos vinculados também ficam inactive
@@ -84,7 +71,7 @@ Construir uma aplicação para gerenciamento de empresas fornecedoras e seus pro
 
 ---
 
-## Estrutura do projeto
+## Structure / Estrutura do projeto
 
 supplier-product-management
 ├── backend
@@ -95,7 +82,7 @@ supplier-product-management
 
 ---
 
-## Arquitetura
+## Architecture / Arquitetura
 
 ### Backend (Laravel)
 
@@ -143,39 +130,7 @@ src/
 
 ---
 
-## Screenshots
-
-### Empresas
-
-**Lista de Empresas**
-- Tabela com listagem paginada de empresas
-- Colunas: Nome, CNPJ, Email, Status, Ações
-- Filtros por nome e status
-- Botões para editar, inativar e excluir
-- Botão para cadastrar nova empresa
-
-**Formulário de Empresa**
-- Campos: Nome, CNPJ, Email, Telefone, Endereço, Status
-- Validação em tempo real
-- Mensagens de erro amigáveis
-
-### Produtos
-
-**Lista de Produtos**
-- Tabela com listagem paginada de produtos
-- Colunas: Nome, SKU, Preço, Empresa, Status, Ações
-- Filtros por nome, status e empresa
-- Botões para editar, inativar e excluir
-- Botão para cadastrar novo produto
-
-**Formulário de Produto**
-- Campos: Empresa (dropdown), Nome, SKU, Preço, Status
-- Validação em tempo real
-- Seleção de empresa através de combobox
-
----
-
-## Como rodar o projeto
+## Run / Como executar
 
 ### Backend
 
@@ -216,13 +171,13 @@ npm run build
 
 ---
 
-## Integração
+## Integration / Integração
 
 O frontend utiliza proxy do Vite para encaminhar chamadas /api para o backend Laravel.
 
 ---
 
-## Endpoints principais
+## Main Endpoints / Endpoints principais
 
 ### Companies
 - GET /api/companies - Listar empresas
@@ -448,7 +403,7 @@ json
 
 ---
 
-## Tecnologias utilizadas
+## Technologies / Tecnologias utilizadas
 
 Backend:
 - Laravel
@@ -467,7 +422,7 @@ Frontend:
 
 ---
 
-## Observação
+## Notes / Observações
 
 Os dados cadastrados são apenas para demonstração do desafio técnico.
 
