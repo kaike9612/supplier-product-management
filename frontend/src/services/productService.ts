@@ -40,18 +40,18 @@ export const productService = {
   },
 
   async getById(id: number): Promise<Product> {
-    const response = await api.get<Product>(`/products/${id}`);
-    return normalizeProduct(response.data);
+    const response = await api.get<{ data: Product }>(`/products/${id}`);
+    return normalizeProduct(response.data.data);
   },
 
   async create(data: CreateProductData): Promise<Product> {
-    const response = await api.post<Product>('/products', data);
-    return response.data;
+    const response = await api.post<{ data: Product }>('/products', data);
+    return normalizeProduct(response.data.data);
   },
 
   async update(id: number, data: UpdateProductData): Promise<Product> {
-    const response = await api.put<Product>(`/products/${id}`, data);
-    return response.data;
+    const response = await api.put<{ data: Product }>(`/products/${id}`, data);
+    return normalizeProduct(response.data.data);
   },
 
   async delete(id: number): Promise<void> {
@@ -60,6 +60,11 @@ export const productService = {
 
   async inactivate(id: number): Promise<void> {
     await api.patch(`/products/${id}/inactivate`);
+  },
+
+  async toggleStatus(id: number): Promise<Product> {
+    const response = await api.patch<{ data: Product }>(`/products/${id}/toggle-status`);
+    return normalizeProduct(response.data.data);
   },
 
   async getByCompany(companyId: number, filters: ProductFilters = {}): Promise<PaginatedResponse<Product>> {

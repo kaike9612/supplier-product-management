@@ -26,14 +26,30 @@ api.interceptors.response.use(
   (error) => {
     if (error.response) {
       // Server responded with error status
-      const message = error.response.data?.message || 'Erro na requisição';
+      const status = error.response.status;
+      const data = error.response.data;
+      
+      // Handle validation errors (422)
+      if (status === 422 && data.errors) {
+        const firstError = Object.values(data.errors)[0];
+        const message = Array.isArray(firstError) ? firstError[0] : 'Erro de validação';
+        return Promise.reject(new Error(message));
+      }
+      
+      // Handle validation errors (400)
+      if (status === 400 && data.message) {
+        return Promise.reject(new Error(data.message));
+      }
+      
+      // Handle other errors
+      const message = data?.message || 'Erro na requisição';
       return Promise.reject(new Error(message));
     } else if (error.request) {
       // Request made but no response
-      return Promise.reject(new Error('Sem resposta do servidor'));
+      return Promise.reject(new Error('Sem resposta do servidor. Verifique sua conexão.'));
     } else {
       // Something else happened
-      return Promise.reject(error);
+      return Promise.reject(new Error('Erro ao processar requisição.'));
     }
   }
 );

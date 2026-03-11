@@ -120,4 +120,26 @@ class ProductController extends Controller
             'message' => 'Produto inativado com sucesso.'
         ], 200);
     }
+
+    /**
+     * Toggle product status (active/inactive).
+     */
+    public function toggleStatus(int $id): JsonResponse
+    {
+        $product = $this->productService->findById($id);
+        
+        if (!$product) {
+            return response()->json([
+                'message' => 'Produto não encontrado.'
+            ], 404);
+        }
+
+        $product = $this->productService->toggleStatus($product);
+        $statusMessage = $product->status === 'active' ? 'ativado' : 'inativado';
+        
+        return response()->json([
+            'message' => "Produto {$statusMessage} com sucesso.",
+            'data' => new ProductResource($product)
+        ], 200);
+    }
 }

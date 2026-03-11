@@ -23,18 +23,18 @@ export const companyService = {
   },
 
   async getById(id: number): Promise<Company> {
-    const response = await api.get<Company>(`/companies/${id}`);
-    return response.data;
+    const response = await api.get<{ data: Company }>(`/companies/${id}`);
+    return response.data.data;
   },
 
   async create(data: CreateCompanyData): Promise<Company> {
-    const response = await api.post<Company>('/companies', data);
-    return response.data;
+    const response = await api.post<{ data: Company }>('/companies', data);
+    return response.data.data;
   },
 
   async update(id: number, data: UpdateCompanyData): Promise<Company> {
-    const response = await api.put<Company>(`/companies/${id}`, data);
-    return response.data;
+    const response = await api.put<{ data: Company }>(`/companies/${id}`, data);
+    return response.data.data;
   },
 
   async delete(id: number): Promise<void> {

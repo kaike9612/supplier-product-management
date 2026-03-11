@@ -28,6 +28,9 @@ Route::apiResource('products', ProductController::class)->parameters([
 // Custom route to inactivate a product
 Route::patch('products/{id}/inactivate', [ProductController::class, 'inactivate']);
 
+// Custom route to toggle product status
+Route::patch('products/{id}/toggle-status', [ProductController::class, 'toggleStatus']);
+
 // Nested routes - Products for a Company
 Route::get('companies/{id}/products', [ProductController::class, 'indexByCompany']);
 Route::post('companies/{id}/products', [ProductController::class, 'store']);

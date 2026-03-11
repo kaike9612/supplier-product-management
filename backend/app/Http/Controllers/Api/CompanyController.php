@@ -89,7 +89,7 @@ class CompanyController extends Controller
         if (!$result['success']) {
             return response()->json([
                 'message' => $result['message']
-            ], 422);
+            ], 400);
         }
 
         return response()->json([

@@ -10,11 +10,61 @@ import { companyService } from '@/services/companyService';
 import { Button, Input, Select, Alert, LoadingPage } from '@/components/ui';
 import { CreateCompanyData, Status } from '@/types';
 
+// Helper function to validate CNPJ (Brazilian company document)
+const validateCNPJ = (cnpj: string): boolean => {
+  // Remove non-digits
+  const digits = cnpj.replace(/\D/g, '');
+  
+  // CNPJ must have 14 digits
+  if (digits.length !== 14) return false;
+  
+  // Check for invalid sequences (all same digits)
+  if (/^(\d)\1{13}$/.test(digits)) return false;
+  
+  // Validate first check digit
+  let sum = 0;
+  let multiplier = 5;
+  for (let i = 0; i < 12; i++) {
+    sum += parseInt(digits[i]) * multiplier;
+    multiplier = multiplier === 2 ? 9 : multiplier - 1;
+  }
+  const remainder = sum % 11;
+  const checkDigit1 = remainder < 2 ? 0 : 11 - remainder;
+  
+  if (parseInt(digits[12]) !== checkDigit1) return false;
+  
+  // Validate second check digit
+  sum = 0;
+  multiplier = 6;
+  for (let i = 0; i < 13; i++) {
+    sum += parseInt(digits[i]) * multiplier;
+    multiplier = multiplier === 2 ? 9 : multiplier - 1;
+  }
+  
+  const checkDigit2 = (sum % 11) < 2 ? 0 : 11 - (sum % 11);
+  
+  return parseInt(digits[13]) === checkDigit2;
+};
+
 const companySchema = z.object({
   name: z.string().min(1, 'Nome é obrigatório').max(255, 'Nome deve ter no máximo 255 caracteres'),
-  cnpj: z.string().min(1, 'CNPJ é obrigatório').max(18, 'CNPJ deve ter no máximo 18 caracteres'),
+  cnpj: z
+    .string()
+    .min(1, 'CNPJ é obrigatório')
+    .refine((val) => /^\d{14}$/.test(val.replace(/\D/g, '')), {
+      message: 'CNPJ deve conter 14 dígitos',
+    })
+    .refine((val) => validateCNPJ(val), {
+      message: 'CNPJ inválido',
+    }),
   email: z.string().min(1, 'Email é obrigatório').email('Email inválido'),
-  phone: z.string().optional().nullable(),
+  phone: z
+    .string()
+    .optional()
+    .nullable()
+    .refine((val) => !val || /^\d{10,11}$/.test(val.replace(/\D/g, '')), {
+      message: 'Telefone deve conter 10 ou 11 dígitos',
+    }),
   address: z.string().optional().nullable(),
   status: z.enum(['active', 'inactive'], { required_error: 'Status é obrigatório' }),
 });

@@ -53,11 +53,14 @@ export function ProductsListPage() {
     },
   });
 
-  const inactivateMutation = useMutation({
-    mutationFn: (id: number) => productService.inactivate(id),
-    onSuccess: () => {
+  const toggleMutation = useMutation({
+    mutationFn: (id: number) => productService.toggleStatus(id),
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['products'] });
-      setSuccess('Produto inativado com sucesso!');
+      const message = data.status === 'active' 
+        ? 'Produto ativado com sucesso!' 
+        : 'Produto inativado com sucesso!';
+      setSuccess(message);
       setTimeout(() => setSuccess(null), 3000);
     },
     onError: (err: Error) => {
@@ -81,10 +84,8 @@ export function ProductsListPage() {
     }
   };
 
-  const handleInactivate = (product: Product) => {
-    if (product.status === 'active') {
-      inactivateMutation.mutate(product.id);
-    }
+  const handleToggleStatus = (product: Product) => {
+    toggleMutation.mutate(product.id);
   };
 
   if (isLoadingProducts) return <LoadingPage />;
@@ -213,11 +214,11 @@ export function ProductsListPage() {
                       <td className="table-cell text-right">
                         <div className="flex items-center justify-end gap-1.5">
                           <button
-                            onClick={() => handleInactivate(product)}
+                            onClick={() => handleToggleStatus(product)}
                             className={`p-2 rounded-lg transition-all duration-200 ${
                               product.status === 'active'
                                 ? 'text-emerald-600 hover:bg-emerald-50'
-                                : 'text-slate-400 hover:bg-slate-100'
+                                : 'text-amber-600 hover:bg-amber-50'
                             }`}
                             title={product.status === 'active' ? 'Inativar' : 'Ativar'}
                           >

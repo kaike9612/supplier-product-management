@@ -72,6 +72,25 @@ class ProductService
     }
 
     /**
+     * Activate a product.
+     */
+    public function activate(Product $product): Product
+    {
+        $product->update(['status' => 'active']);
+        return $product->fresh(['company']);
+    }
+
+    /**
+     * Toggle product status (activate/inactivate).
+     */
+    public function toggleStatus(Product $product): Product
+    {
+        $newStatus = $product->status === 'active' ? 'inactive' : 'active';
+        $product->update(['status' => $newStatus]);
+        return $product->fresh(['company']);
+    }
+
+    /**
      * Find product by ID.
      */
     public function findById(int $id): ?Product
